@@ -4,6 +4,7 @@ import {
   SubscriptionResponseMessageModel,
   WelcomeMessageModel,
   MessageModelType,
+  SubscriptionMode,
 } from './types/Models';
 import { MessageType } from './types/MessageType';
 
@@ -25,15 +26,24 @@ export class ClientManager {
     client.lastSeen = new Date();
 
     if (message.type === MessageType.SUBSCRIPTION_REQUEST) {
-      if (!client.channels.includes(message.channel)) {
-        client.channels.push(message.channel);
+      let success = true;
+      switch (message.mode) {
+        case SubscriptionMode.SUBSCRIBE:
+          client.channels.add(message.channel);
+          break;
+        case SubscriptionMode.UNSUBSCRIBE:
+          client.channels.delete(message.channel);
+          break;
+        default:
+          success = false;
       }
 
       client.send(
         JSON.stringify({
           type: MessageType.SUBSCRIPTION_RESPONSE,
-          success: true,
+          success,
           channel: message.channel,
+          mode: message.mode,
         } as SubscriptionResponseMessageModel)
       );
     }
@@ -53,7 +63,7 @@ export class ClientManager {
     const networkMessage = JSON.stringify(message);
 
     this.clients.forEach(client => {
-      if (client.channels.includes(channel)) {
+      if (client.channels.has(channel)) {
         try {
           client.send(networkMessage);
         } catch {}

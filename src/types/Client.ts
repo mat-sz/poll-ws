@@ -4,7 +4,7 @@ export interface Client {
   lastSeen: Date;
   readonly remoteAddress: string;
   readonly readyState: number;
-  channels: string[];
+  channels: Set<string>;
 
   send(data: string): void;
   close(): void;
