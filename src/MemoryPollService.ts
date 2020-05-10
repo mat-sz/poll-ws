@@ -1,3 +1,5 @@
+import { v4 as uuid } from 'uuid';
+
 import { PollService } from './types/PollService';
 import { Poll, Answer } from './types/Poll';
 
@@ -19,6 +21,32 @@ export class MemoryPollService implements PollService {
 
   async getPollId(shortId: string): Promise<string | undefined> {
     return this.shortIds[shortId];
+  }
+
+  async createPoll(
+    title: string,
+    answers: string[]
+  ): Promise<Poll | undefined> {
+    const answerModels: Answer[] = answers.map(answer => {
+      return {
+        id: uuid(),
+        text: answer,
+        count: 0,
+      } as Answer;
+    });
+
+    const pollModel: Poll = {
+      id: uuid(),
+      title,
+      answerIds: answerModels.map(answer => answer.id),
+    };
+
+    answerModels.forEach(answer => {
+      this.answers[answer.id] = answer;
+    });
+    this.polls[pollModel.id] = pollModel;
+
+    return this.getPoll(pollModel.id);
   }
 
   async vote(answerId: string): Promise<void> {
