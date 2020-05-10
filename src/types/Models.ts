@@ -37,7 +37,7 @@ export interface SubscriptionResponseMessageModel extends MessageModel {
   mode: SubscriptionMode;
 }
 
-export type MessageModelType =
+export type Message =
   | WelcomeMessageModel
   | ErrorMessageModel
   | SubscriptionRequestMessageModel

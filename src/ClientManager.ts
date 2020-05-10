@@ -3,7 +3,7 @@ import {
   MessageModel,
   SubscriptionResponseMessageModel,
   WelcomeMessageModel,
-  MessageModelType,
+  Message,
   SubscriptionMode,
 } from './types/Models';
 import { MessageType } from './types/MessageType';
@@ -22,7 +22,7 @@ export class ClientManager {
     );
   }
 
-  handleMessage(client: Client, message: MessageModelType) {
+  handleMessage(client: Client, message: Message) {
     client.lastSeen = new Date();
 
     if (message.type === MessageType.SUBSCRIPTION_REQUEST) {
