@@ -2,6 +2,7 @@ import { v4 as uuid } from 'uuid';
 
 import { PollService } from './types/PollService';
 import { Poll, Answer } from './types/Poll';
+import { generateShortId } from './utils/ShortIdGenerator';
 
 export class MemoryPollService implements PollService {
   private polls: Record<string, Poll> = {};
@@ -45,6 +46,7 @@ export class MemoryPollService implements PollService {
       this.answers[answer.id] = answer;
     });
     this.polls[pollModel.id] = pollModel;
+    this.shortIds[generateShortId()] = pollModel.id;
 
     return this.getPoll(pollModel.id);
   }
