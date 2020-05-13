@@ -44,13 +44,22 @@ export class MemoryPollService implements PollService {
       answerIds: answerModels.map(answer => answer.id),
     };
 
+    const shortId = generateShortId();
     answerModels.forEach(answer => {
       this.answers[answer.id] = answer;
     });
     this.polls[pollModel.id] = pollModel;
-    this.shortIds[generateShortId()] = pollModel.id;
+    this.shortIds[shortId] = pollModel.id;
 
-    return this.getPoll(pollModel.id);
+    const poll = await this.getPoll(pollModel.id);
+    if (!poll) {
+      return undefined;
+    }
+
+    return {
+      ...poll,
+      shortId,
+    };
   }
 
   async vote(answerId: string): Promise<void> {

@@ -9,4 +9,5 @@ export interface Poll {
   title: string;
   answerIds: string[];
   answers?: Answer[];
+  shortId?: string;
 }
