@@ -7,6 +7,8 @@ import {
   Body,
   BadRequestError,
   InternalServerError,
+  Param,
+  NotFoundError,
 } from 'routing-controllers';
 
 import { MemoryPollService } from '../services/MemoryPollService';
@@ -46,9 +48,19 @@ export class PollController {
     }
   }
 
-  @Get('/{shortId}')
-  async get() {}
+  @Get('/:shortId')
+  async get(@Param('shortId') shortId: string) {
+    console.log(await this.pollService.getPollId(shortId));
+    const poll = await this.pollService.getPoll(
+      await this.pollService.getPollId(shortId)
+    );
+    if (!poll) {
+      return new NotFoundError();
+    }
 
-  @Post('/{shortId}/vote')
+    return poll;
+  }
+
+  @Post('/:shortId/vote')
   async vote() {}
 }
