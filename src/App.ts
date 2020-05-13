@@ -9,6 +9,7 @@ import WebSocket from 'ws';
 import { WSClient } from './WSClient';
 import { ClientManager } from './ClientManager';
 import { isMessageModel } from './types/typeChecking';
+import { PollController } from './controllers/PollController';
 
 // Configuration
 const host = process.env.WS_HOST || '127.0.0.1';
@@ -63,7 +64,7 @@ export default async function App() {
     // HTTP
     const app = createKoaServer({
       cors: true,
-      controllers: [],
+      controllers: [PollController],
       middlewares: [],
       defaultErrorHandler: true,
     });

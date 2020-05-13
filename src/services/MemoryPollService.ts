@@ -1,9 +1,11 @@
 import { v4 as uuid } from 'uuid';
+import { Service } from 'typedi';
 
-import { PollService } from './types/PollService';
-import { Poll, Answer } from './types/Poll';
-import { generateShortId } from './utils/ShortIdGenerator';
+import { PollService } from '../types/PollService';
+import { Poll, Answer } from '../types/Poll';
+import { generateShortId } from '../utils/ShortIdGenerator';
 
+@Service()
 export class MemoryPollService implements PollService {
   private polls: Record<string, Poll> = {};
   private shortIds: Record<string, string> = {};
