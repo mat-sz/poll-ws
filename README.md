@@ -14,7 +14,7 @@ Run `yarn install`, `yarn build` and then simply run `yarn start`. For developme
 
 The following variables are used for the configuration:
 
-| Variable  | Default value | Description                         |
-| --------- | ------------- | ----------------------------------- |
-| `WS_HOST` | `127.0.0.1`   | IP address to bind to (WebSockets). |
-| `WS_PORT` | `5000`        | Port to bind to (WebSockets).       |
+| Variable   | Default value | Description            |
+| ---------- | ------------- | ---------------------- |
+| `APP_HOST` | `127.0.0.1`   | IP address to bind to. |
+| `APP_PORT` | `5000`        | Port to bind to.       |
