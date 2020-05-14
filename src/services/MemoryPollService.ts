@@ -19,6 +19,9 @@ export class MemoryPollService implements PollService {
     return {
       ...this.polls[pollId],
       answers: this.polls[pollId].answerIds.map(id => this.answers[id]),
+      shortId: Object.keys(this.shortIds).find(
+        key => this.shortIds[key] === pollId
+      ),
     };
   }
 
