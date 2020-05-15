@@ -1,5 +1,6 @@
 export interface Answer {
   id: string;
+  pollId: string;
   text: string;
   count: number;
 }
@@ -7,7 +8,6 @@ export interface Answer {
 export interface Poll {
   id: string;
   title: string;
-  answerIds: string[];
   answers?: Answer[];
   shortId?: string;
 }

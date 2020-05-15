@@ -18,7 +18,9 @@ export class MemoryPollService implements PollService {
 
     return {
       ...this.polls[pollId],
-      answers: this.polls[pollId].answerIds.map(id => this.answers[id]),
+      answers: Object.values(this.answers).filter(
+        answer => answer.pollId === pollId
+      ),
       shortId: Object.keys(this.shortIds).find(
         key => this.shortIds[key] === pollId
       ),
@@ -33,18 +35,20 @@ export class MemoryPollService implements PollService {
     title: string,
     answers: string[]
   ): Promise<Poll | undefined> {
+    const pollId = uuid();
+
     const answerModels: Answer[] = answers.map(answer => {
       return {
         id: uuid(),
+        pollId,
         text: answer,
         count: 0,
       } as Answer;
     });
 
     const pollModel: Poll = {
-      id: uuid(),
+      id: pollId,
       title,
-      answerIds: answerModels.map(answer => answer.id),
     };
 
     const shortId = generateShortId();
