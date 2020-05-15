@@ -5,9 +5,11 @@ import {
   WelcomeMessageModel,
   Message,
   SubscriptionMode,
+  SubscriptionUpdateMessageModel,
 } from '../types/Models';
 import { MessageType } from '../types/MessageType';
 import { Service } from 'typedi';
+import { stringify } from 'querystring';
 
 @Service()
 export class ClientManagerService {
@@ -61,13 +63,17 @@ export class ClientManagerService {
     });
   }
 
-  broadcastToChannel(channel: string, message: MessageModel) {
-    const networkMessage = JSON.stringify(message);
+  broadcastToChannel(channel: string, value: any) {
+    const updateMessage = JSON.stringify({
+      type: MessageType.SUBSCRIPTION_UPDATE,
+      channel,
+      value,
+    } as SubscriptionUpdateMessageModel);
 
     this.clients.forEach(client => {
       if (client.channels.has(channel)) {
         try {
-          client.send(networkMessage);
+          client.send(updateMessage);
         } catch {}
       }
     });

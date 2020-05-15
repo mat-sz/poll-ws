@@ -37,8 +37,15 @@ export interface SubscriptionResponseMessageModel extends MessageModel {
   mode: SubscriptionMode;
 }
 
+export interface SubscriptionUpdateMessageModel extends MessageModel {
+  type: MessageType.SUBSCRIPTION_UPDATE;
+  channel: string;
+  value: any;
+}
+
 export type Message =
   | WelcomeMessageModel
   | ErrorMessageModel
   | SubscriptionRequestMessageModel
-  | SubscriptionResponseMessageModel;
+  | SubscriptionResponseMessageModel
+  | SubscriptionUpdateMessageModel;

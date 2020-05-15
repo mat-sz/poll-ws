@@ -4,4 +4,5 @@ export enum MessageType {
   PING = 'ping',
   SUBSCRIPTION_REQUEST = 'subscriptionRequest',
   SUBSCRIPTION_RESPONSE = 'subscriptionResponse',
+  SUBSCRIPTION_UPDATE = 'subscriptionUpdate',
 }
