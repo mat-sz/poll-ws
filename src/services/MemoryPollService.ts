@@ -1,12 +1,16 @@
 import { v4 as uuid } from 'uuid';
-import { Service } from 'typedi';
+import { Service, Inject } from 'typedi';
 
 import { PollService } from '../types/PollService';
 import { Poll, Answer } from '../types/Poll';
 import { generateShortId } from '../utils/ShortIdGenerator';
+import { ClientManagerService } from './ClientManagerService';
 
 @Service()
 export class MemoryPollService implements PollService {
+  @Inject()
+  private clientManagerService: ClientManagerService;
+
   private polls: Record<string, Poll> = {};
   private shortIds: Record<string, string> = {};
   private answers: Record<string, Answer> = {};
@@ -70,8 +74,14 @@ export class MemoryPollService implements PollService {
   }
 
   async vote(answerId: string): Promise<void> {
-    if (this.answers[answerId]) {
-      this.answers[answerId].count++;
+    const answer = this.answers[answerId];
+    if (answer) {
+      answer.count++;
+
+      const poll = await this.getPoll(answer.pollId);
+      if (poll) {
+        this.clientManagerService.broadcastToChannel(poll.shortId, poll);
+      }
     }
   }
 }
