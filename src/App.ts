@@ -3,12 +3,12 @@ import {
   useContainer as useContainerRC,
   useKoaServer,
 } from 'routing-controllers';
-import { Container } from 'typedi';
+import { Container, Service } from 'typedi';
 import Koa from 'koa';
 import websockify from 'koa-websocket';
 
 import { WSClient } from './WSClient';
-import { ClientManager } from './ClientManager';
+import { ClientManagerService } from './services/ClientManagerService';
 import { isMessageModel } from './types/typeChecking';
 import { PollController } from './controllers/PollController';
 
@@ -28,7 +28,7 @@ export default async function App() {
     });
     app.proxy = proxy;
 
-    const clientManager = new ClientManager();
+    const clientManager = Container.get(ClientManagerService);
 
     app.ws.use((ctx, next) => {
       const ws = ctx.websocket;

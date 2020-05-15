@@ -1,14 +1,16 @@
-import { Client } from './types/Client';
+import { Client } from '../types/Client';
 import {
   MessageModel,
   SubscriptionResponseMessageModel,
   WelcomeMessageModel,
   Message,
   SubscriptionMode,
-} from './types/Models';
-import { MessageType } from './types/MessageType';
+} from '../types/Models';
+import { MessageType } from '../types/MessageType';
+import { Service } from 'typedi';
 
-export class ClientManager {
+@Service()
+export class ClientManagerService {
   private clients: Client[] = [];
 
   addClient(client: Client) {
